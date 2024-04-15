@@ -22,11 +22,11 @@ app.get("/", (req, res) => {
     res.json("Salom Node.js")
 })
 const user = require('./routes/userRoutes');
-const main = require('./routes/MainRoutes');
+
 const teacher = require('./routes/TeacherRoutes');
 const quiz = require('./routes/Quiz')
 
-app.use('/edu', user, main, teacher, quiz);
+app.use('/edu', user, teacher, quiz);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
