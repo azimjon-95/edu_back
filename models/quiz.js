@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+const time = new Date();
 let today =
     time.getDate() + "." + (time.getMonth() + 1) + "." + time.getFullYear();
 
