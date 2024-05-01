@@ -5,8 +5,10 @@ const {
     getTeacher,
     deleteTeacher,
     updateTeacher,
+    postLogin
 } = require("../controls/Teacher");
 teacher.post("/createTeacher", createTeacher);
+teacher.post("/postLogin", postLogin);
 teacher.get("/getTeacher", getTeacher);
 teacher.delete("/deleteTeacher/:_id", deleteTeacher);
 teacher.put("/updateTeacher/:id", updateTeacher);

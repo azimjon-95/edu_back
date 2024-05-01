@@ -18,6 +18,38 @@ const getData = async (req, res) => {
         })
     }
 }
+
+const postLogin = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Username or password is invalid!",
+            });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({
+                success: false,
+                message: "Username or password is invalid!",
+            });
+        }
+
+        const token = jwt.sign({ username: user.username }, "secret");
+        return res.status(200).json({
+            success: true,
+            message: "Sign in successful!",
+            token: token
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, message: "Server error: An error occurred during the login process." });
+    }
+};
 // ------------------Student Malumotlarini Qoshish---------------------
 const createUser = async (req, res) => {
     try {
@@ -126,4 +158,5 @@ module.exports = {
     getData,
     deleteUser,
     updateUser,
+    postLogin
 }
