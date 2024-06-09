@@ -27,19 +27,21 @@ router.post("/", async (req, res) => {
   }
 });
 
+
 // Check certificate by ID
 router.get("/check/:id", async (req, res) => {
-  const params = req.params.id.toUpperCase();
+  const id = req.params.id;
   try {
-    const validCertificate = await Dip.findOne({ id: params });
-    if (!validCertificate) {
+    const certificate = await Dip.findOne({ id });
+    if (!certificate) {
       return res.status(404).json({ message: "Certificate not found" });
     }
-    res.status(200).json(validCertificate);
+    res.status(200).json(certificate);
   } catch (err) {
     res.status(500).json({ message: "Error fetching certificate", error: err.message });
   }
 });
+
 
 // Get all certificates
 router.get("/all", async (req, res) => {
