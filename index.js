@@ -1,34 +1,35 @@
 const express = require("express");
-const { connect } = require("mongoose")
+const { connect } = require("mongoose");
 const cors = require("cors");
-
 require("dotenv").config();
 
-const app = express()
+const app = express();
 app.use(express.json());
+app.use(cors());
 
-app.use(cors())
-
-// ---Data-Base---
-async function connectToDB() {
-    await connect(process.env.MONGO_URL)
-        .then(() => console.log("MongoDb is connect"))
-        .catch(() => console.log("MogoDb is not connected"))
+async function connectToDb() {
+    await connect(process.env.DB_CONNECTION)
+        .then(() => console.log("MongoDB is connected"))
+        .catch((err) => console.log("MongoDB is not connected", err));
 }
+connectToDb();
 
-connectToDB();
+const userRoutes = require("./routes/user");
+const loginRoute = require("./routes/loginroute");
+const certificate = require('./routes/certificate');
+// Router import
 
-app.get("/", (req, res) => {
-    res.json("Salom Node.js")
-})
-const user = require('./routes/userRoutes');
+app.use('/user', userRoutes);
+app.use('/auth', loginRoute);
+app.use("/certificate", certificate);
 
-const teacher = require('./routes/TeacherRoutes');
-const quiz = require('./routes/Quiz')
 
-app.use('/edu', user, teacher, quiz);
+app.get("/", async (req, res) => res.json("App is running"));
 
-const PORT = process.env.PORT || 5000
-app.listen(PORT, () => {
-    console.log(`Server http://localhost:${PORT} portda ishga tushdi!`);
-})
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+    // Use server.listen instead of app.listen
+    console.log(`Server listening => http://localhost:${PORT}`)
+);
+
