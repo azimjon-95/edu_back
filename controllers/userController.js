@@ -10,12 +10,18 @@ const handleError = (res, error) => {
   res.status(400).json({ error: error.message });
 }
 
+
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
+  console.log(username, password);
 
   try {
     const user = await Users.findOne({ username, password });
     console.log(user);
+    if (!user) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
     const token = createToken(user._id);
     res.status(200).json({ username, token, role: user.role, id: user._id, subject: user.subject });
   } catch (error) {
