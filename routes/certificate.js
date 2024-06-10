@@ -5,16 +5,16 @@ const Dip = require("../models/diplomModul");
 // Create a new certificate
 router.post("/", async (req, res) => {
   try {
-    const existCertificate = await Dip.find({ id: req.body.id, name: req.body.name, surname: req.body.surname });
+    const existCertificate = await Dip.find({ id: req.body.id, firstname: req.body.firstname, lastname: req.body.lastname });
     if (existCertificate.length > 0) {
       return res.status(409).json({ message: "Certificate already exists" });
     }
 
     const newCertificate = new Dip({
       id: req.body.id,
-      name: req.body.name,
-      surname: req.body.surname,
-      teachername: req.body.teachername,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      other: req.body.other,
       courseName: req.body.courseName,
       givenDate: req.body.givenDate,
       catigory: req.body.catigory,
@@ -72,13 +72,13 @@ router.delete("/delete/:id", async (req, res) => {
 // Search certificates
 router.get("/search", async (req, res) => {
   try {
-    const { id, name, surname, teachername, courseName } = req.query;
+    const { id, firstname, lastname, other, courseName } = req.query;
     const query = {};
 
     if (id) query.id = id;
-    if (name) query.name = new RegExp(name, 'i'); // case-insensitive search
-    if (surname) query.surname = new RegExp(surname, 'i');
-    if (teachername) query.teachername = new RegExp(teachername, 'i');
+    if (firstname) query.firstname = new RegExp(firstname, 'i'); // case-insensitive search
+    if (lastname) query.lastname = new RegExp(lastname, 'i');
+    if (other) query.other = new RegExp(other, 'i');
     if (courseName) query.courseName = courseName;
 
     const certificates = await Dip.find(query);
