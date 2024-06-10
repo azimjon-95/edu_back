@@ -5,15 +5,15 @@ const ENG = new mongoose.Schema({
         type: String,
         required: true
     },
-    name: {
+    firstname: {
         type: String,
         required: true,
     },
-    surname: {
+    lastname: {
         type: String,
         required: true,
     },
-    teachername: {
+    other: {
         type: String,
         required: true,
     },
